@@ -49,18 +49,41 @@
         cursor: pointer;
       }
     }
+
+    #foguete {
+      position: fixed;
+      top: 110%;
+      left: calc(50% - 5rem);
+      width: 10rem;
+      height: 10rem;
+      transition: top 2.5s ease;
+      transform: rotate(315deg);
+    }
+
+    #foguete.move {
+      top: -20rem;
+    }
   </style>
 </head>
 <body>
   <div class="space">
     <h1>Operação viagem espacial!</h1>
     <button onclick="startMission()">Iniciar</button>
+    <img id="foguete" src="/assets/rocket.svg" alt="foguete"/>
   </div>
 
   <script>
     const startMission = () => {
-      localStorage.setItem("points", 0);
-      window.location.pathname = '/mission1.html'
+      const rocket = document.getElementById("foguete");
+
+      if (!rocket) return;
+
+      rocket.classList.add("move");
+
+      setTimeout(() => {
+        localStorage.setItem("points", 0);
+        window.location.pathname = '/mission1.html';
+      }, 1500);
     }
   </script>
 </body>
