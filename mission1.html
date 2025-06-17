@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Missão: Terra para Lua</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    @keyframes bigBang {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: rotate(0);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to bottom, #000428, #004e92);
+      font-family: sans-serif;
+      overflow: hidden;
+      animation: bigBang 2s ease forwards;
+    }
+
+    .space {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5rem;
+      width: 100%;
+    }
+
+    h1 {
+      color: white;
+    }
+
+    #container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 40%;
+      height: 5rem;
+      padding: 0 1rem;
+    }
+
+    #terra {
+      position: absolute;
+      left: 0;
+      width: 5rem;
+      height: 5rem;
+      animation: rotate 4s linear 0s infinite normal forwards;
+    }
+
+    #lua {
+      position: absolute;
+      right: 0;
+      width: 4rem;
+      height: 4rem;
+      animation: rotate 2s linear 0s infinite normal forwards;
+    }
+
+    #foguete {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      width: 3rem;
+      height: 3rem;
+      transition: left 1s ease;
+    }
+
+    #foguete.move {
+      left: calc(100% - 3.5rem);
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    #questionArea {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    input, button {
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border-radius: 0.3rem;
+      border: none;
+      cursor: pointer;
+    }
+
+    #help {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      padding: 0.5rem;
+      background-color: white;
+      border-radius: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="space">
+    <h1 id="feedbackText">Leve o foguete até a lua!</h1>
+    <div id="container">
+      <img id="terra" src="/assets/terra.webp" alt="terra"/>
+      <img id="lua" src="/assets/lua.webp" alt="lua"/>
+      <img id="foguete" src="/assets/rocket.svg" alt="foguete"/>
+    </div>
+    <div id="questionArea">
+      <form id="myForm" onsubmit="validateResponse(event)">
+        <input type="text" name="answer" placeholder="resposta..." />
+        <button type="submit">Validar</button>
+      </form>
+    </div>
+    <div id="help" onclick="help()">
+      <img src="/assets/help.svg" alt="help" />
+      <span id="help-text">Ver ajuda</span>
+    </div>
+  </div>
+
+  <script>
+    let isUsedHelp = false;
+
+    const validateResponse = (event) => {
+      event.preventDefault();
+
+      const formElement = event.target;
+      const data = new FormData(formElement);
+      const answer = data.get("answer").trim().toLowerCase();
+      
+      if (answer === "justify-content: flex-end;") {
+        const foguete = document.getElementById("foguete");
+        foguete.classList.add("move");
+        
+        const feedbackText = document.getElementById("feedbackText");
+
+        if (!feedbackText) return;
+
+        feedbackText.innerText = "Parabéns, você acertou!";
+
+        const currentPoints = localStorage.getItem("points") || 0;
+        
+        if (!isUsedHelp && currentPoints === "0") {
+          localStorage.setItem("points", 1);
+        } else {
+          localStorage.setItem("points", 0);
+        }
+
+        setTimeout(() => {
+          window.location.pathname = '/mission2.html';
+        }, 2000);
+      } else {
+        alert("Resposta incorreta!")
+      }
+    };
+
+    const help = () => {
+      const helpCard = document.getElementById("help");
+      const helpText = document.getElementById("help-text");
+
+      if (!helpCard || !helpText) return;
+
+      isUsedHelp = true;
+
+      alert("Lembre do justify-content!");
+      helpCard.style.backgroundColor = "red";
+      helpText.innerText = "Ajuda solicitada!";
+    };
+  </script>
+</body>
+</html>

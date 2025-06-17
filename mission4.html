@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Missão: Terra para Marte</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    @keyframes bigBang {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: rotate(0);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to bottom, #000428, #004e92);
+      font-family: sans-serif;
+      overflow: hidden;
+      animation: bigBang 2s ease forwards;
+    }
+
+    .space {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5rem;
+      width: 100%;
+      height: 100%;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    h1 {
+      color: white;
+    }
+
+    #container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 5rem;
+      height: 60%;
+    }
+
+    #terra {
+      position: absolute;
+      top: 0;
+      left: calc(50% - 2.5rem);
+      width: 5rem;
+      height: 5rem;
+      animation: rotate 4s linear 0s infinite normal forwards;
+    }
+
+    #lua {
+      position: absolute;
+      left: calc(50% - 2rem);
+      top: 30%;
+      width: 4rem;
+      height: 4rem;
+      animation: rotate 2s linear 0s infinite normal forwards;
+    }
+
+    #marte {
+      position: absolute;
+      bottom: 0;
+      left: calc(50% - 3rem);
+      width: 6rem;
+      height: 6rem;
+      animation: rotate 7s linear 0s infinite normal forwards;
+    }
+
+    #foguete {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      width: 3rem;
+      height: 3rem;
+      transition: top 1s ease;
+      transform: rotateX(180deg);
+    }
+
+    #foguete.move {
+      top: calc(100% - 4rem);
+    }
+
+    #questionArea {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    input, button {
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border-radius: 0.3rem;
+      border: none;
+      cursor: pointer;
+    }
+
+    #help {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      padding: 0.5rem;
+      background-color: white;
+      border-radius: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="space">
+    <h1 id="feedbackText">Leve o foguete até marte!</h1>
+    <div id="container">
+      <img id="terra" src="/assets/terra.webp" alt="terra"/>
+      <img id="lua" src="/assets/lua.webp" alt="lua"/>
+      <img id="marte" src="/assets/marte.png" alt="marte"/>
+      <img id="foguete" src="/assets/rocket.svg" alt="foguete"/>
+    </div>
+    <div id="questionArea">
+      <form id="myForm" onsubmit="validateResponse(event)">
+        <input type="text" name="answer" placeholder="resposta..." />
+        <button type="submit">Validar</button>
+      </form>
+    </div>
+    <div id="help" onclick="help()">
+      <img src="/assets/help.svg" alt="help" />
+      <span id="help-text">Ver ajuda</span>
+    </div>
+  </div>
+
+  <script>
+    let isUsedHelp = false;
+    
+    const validateResponse = (event) => {
+      event.preventDefault();
+
+      const formElement = event.target;
+      const data = new FormData(formElement);
+      const answer = data.get("answer").trim().toLowerCase();
+      
+      if (answer === "align-items: flex-end;") {
+        const foguete = document.getElementById("foguete");
+        foguete.classList.add("move");
+        
+        const feedbackText = document.getElementById("feedbackText");
+
+        if (!feedbackText) return;
+
+        feedbackText.innerText = "Parabéns, você acertou!";
+
+        const currentPoints = localStorage.getItem("points") || 0;
+        
+        if (!isUsedHelp && currentPoints === "3") {
+          localStorage.setItem("points", 4);
+        }
+
+        setTimeout(() => {
+          window.location.pathname = '/mission5.html';
+        }, 2000);
+      } else {
+        alert("Resposta incorreta!")
+      }
+    };
+
+    const help = () => {
+      const helpCard = document.getElementById("help");
+      const helpText = document.getElementById("help-text");
+
+      if (!helpCard || !helpText) return;
+
+      isUsedHelp = true;
+
+      alert("Lembre do align-items! Inversão de eixo.");
+      helpCard.style.backgroundColor = "red";
+      helpText.innerText = "Ajuda solicitada!";
+    };
+  </script>
+</body>
+</html>
