@@ -157,8 +157,8 @@
 
         const currentPoints = localStorage.getItem("points") || 0;
         
-        if (!isUsedHelp && currentPoints === "2") {
-          localStorage.setItem("points", 3);
+        if (!isUsedHelp) {
+          localStorage.setItem("points", +currentPoints + 1);
         }
 
         setTimeout(() => {
