@@ -105,18 +105,29 @@
       cursor: pointer;
     }
 
+    #infos {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      position: fixed;
+      gap: 1rem;
+      bottom: 10px;
+      right: 10px;
+    }
+
     #help {
       display: flex;
       justify-content: flex-start;
       align-items: center;
       gap: 0.5rem;
       cursor: pointer;
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
       padding: 0.5rem;
       background-color: white;
       border-radius: 0.5rem;
+    }
+
+    #directionInfo {
+      color: white;
     }
   </style>
 </head>
@@ -134,9 +145,12 @@
         <button type="submit">Validar</button>
       </form>
     </div>
-    <div id="help" onclick="help()">
-      <img src="/assets/help.svg" alt="help" />
-      <span id="help-text">Ver ajuda</span>
+    <div id="infos">
+      <span id="directionInfo">⚠️ flex-direction: row;</span>
+      <div id="help" onclick="help()">
+        <img src="/assets/help.svg" alt="help" />
+        <span id="help-text">Ver ajuda</span>
+      </div>
     </div>
   </div>
 
